@@ -29,7 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: widget.product.color,
         title: const Text("Details"),
@@ -50,16 +50,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ),
               Positioned(
-                  top: 10,
+                  top: 0,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 320,
+                        height: 300,
                         width: width - 40,
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
                           color: Colors.white,
+                          border:
+                              Border.all(width: 1, color: Colors.grey.shade400),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
@@ -72,7 +74,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   Center(
                                     child: Image.asset(
                                       "assets/${widget.product.image}",
-                                      height: 200,
+                                      height: 180,
                                       width: 200,
                                       fit: BoxFit.contain,
                                     ),
@@ -219,7 +221,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ]);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        backgroundColor: Colors.amber,
+                        backgroundColor: Colors.white,
                         content: Text(
                           "Product Added to Cart",
                           style: TextStyle(
@@ -232,7 +234,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     );
                   },
                   child: Container(
-                    height: 60,
+                    height: 50,
                     width: width,
                     alignment: Alignment.center,
                     color: widget.product.color,
@@ -241,7 +243,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -263,12 +265,26 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: ListView.builder(
           itemCount: 3,
           itemBuilder: (context, index) {
-            final product = relatedProducts[index];
+            // filter related items - product type should equal to current type and not contain current item.
+            var filterProducts = relatedProducts
+                .where((product) =>
+                    (product.productType == widget.product.productType) &&
+                    (product.productName != widget.product.productName))
+                .toList();
+            print(filterProducts);
+            // for (var pro in filterProducts) {
+            //   print(pro.productName);
+            // }
+            final product = filterProducts[index];
             return Container(
               height: 100,
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(15),
-              color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(width: 1, color: Colors.grey.shade400),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
